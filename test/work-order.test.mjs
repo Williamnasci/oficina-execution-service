@@ -1,0 +1,35 @@
+import { test } from 'node:test';
+import assert from 'node:assert/strict';
+import { startDiagnosis, diagnose, queue, startRepair, finishRepair, cancel, cancellationTombstone } from '../src/work-order.ts';
+const diagnosed = () => diagnose(startDiagnosis('os-1'), ' Trocar filtro ');
+test('diagnosis and payment fence repair execution', () => {
+  assert.throws(() => startDiagnosis(' '));
+  const order = startDiagnosis('os-1');
+  assert.throws(() => diagnose(order, ' '));
+  assert.throws(() => queue(order, 'mp-1'));
+  const ready = diagnosed();
+  assert.equal(ready.diagnosis, 'Trocar filtro');
+  assert.throws(() => diagnose(ready, 'another'));
+  assert.throws(() => queue(ready, ' '));
+  assert.throws(() => startRepair(ready));
+  assert.throws(() => finishRepair(ready));
+  const queued = queue(ready, 'mp-1');
+  assert.equal(queue(queued, 'mp-1'), queued);
+  assert.throws(() => queue(queued, 'mp-2'));
+  const running = startRepair(queued);
+  assert.equal(startRepair(running), running);
+  assert.equal(finishRepair(running).status, 'FINISHED');
+});
+test('cancel fences delayed queue and cannot undo physical work', () => {
+  const cancelled = cancel(diagnosed());
+  assert.equal(cancelled.status, 'CANCELLED');
+  assert.equal(cancel(cancelled), cancelled);
+  assert.throws(() => queue(cancelled, 'mp-1'));
+  const running = startRepair(queue(diagnosed(), 'mp-1'));
+  assert.throws(() => cancel(running));
+  assert.throws(() => cancel(finishRepair(running)));
+  const tombstone = cancellationTombstone('os-1');
+  assert.equal(tombstone.status, 'CANCELLED');
+  assert.throws(() => diagnose(tombstone, 'late diagnosis'));
+  assert.throws(() => cancellationTombstone(' '));
+});

@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: oficina-execution-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels: { app: oficina-execution-service }
+  template:
+    metadata:
+      labels: { app: oficina-execution-service, tags.datadoghq.com/service: oficina-execution-service, tags.datadoghq.com/env: fase4 }
+      annotations:
+        ad.datadoghq.com/api.logs: '[{"source":"nodejs","service":"oficina-execution-service"}]'
+    spec:
+      automountServiceAccountToken: false
+      terminationGracePeriodSeconds: 30
+      containers:
+        - name: api
+          image: ghcr.io/williamnasci/oficina-execution-service:latest
+          imagePullPolicy: IfNotPresent
+          ports: [{ containerPort: 3000, name: http }]
+          envFrom:
+            - secretRef: { name: service-secrets }
+            - configMapRef: { name: service-config }
+          env:
+            - name: DD_AGENT_HOST
+              valueFrom: { fieldRef: { fieldPath: status.hostIP } }
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 1000
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities: { drop: [ALL] }
+          volumeMounts: [{ name: tmp, mountPath: /tmp }]
+          resources:
+            requests: { cpu: 100m, memory: 128Mi }
+            limits: { cpu: 500m, memory: 512Mi }
+          startupProbe: { httpGet: { path: /health, port: http }, failureThreshold: 30, periodSeconds: 5 }
+          readinessProbe: { httpGet: { path: /ready, port: http }, periodSeconds: 5 }
+          livenessProbe: { httpGet: { path: /health, port: http }, periodSeconds: 10 }
+      volumes: [{ name: tmp, emptyDir: {} }]
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: oficina-execution-service
+spec:
+  selector: { app: oficina-execution-service }
+  ports: [{ name: http, port: 3000, targetPort: http }]

@@ -1,0 +1,253 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Oficina Execution Service",
+    "version": "0.2.0"
+  },
+  "servers": [
+    {
+      "url": "/"
+    }
+  ],
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ],
+  "paths": {
+    "/executions/{id}": {
+      "get": {
+        "summary": "Consultar execução",
+        "responses": {
+          "200": {
+            "description": "Sucesso"
+          },
+          "400": {
+            "description": "Payload inválido"
+          },
+          "401": {
+            "description": "Autenticação inválida"
+          },
+          "403": {
+            "description": "Sem permissão"
+          },
+          "409": {
+            "description": "Conflito de idempotência"
+          },
+          "422": {
+            "description": "Regra de negócio inválida"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/executions/{id}/diagnosis": {
+      "post": {
+        "summary": "Registrar diagnóstico",
+        "responses": {
+          "200": {
+            "description": "Sucesso"
+          },
+          "400": {
+            "description": "Payload inválido"
+          },
+          "401": {
+            "description": "Autenticação inválida"
+          },
+          "403": {
+            "description": "Sem permissão"
+          },
+          "409": {
+            "description": "Conflito de idempotência"
+          },
+          "422": {
+            "description": "Regra de negócio inválida"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Diagnosis"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/executions/{id}/start": {
+      "post": {
+        "summary": "Iniciar reparo",
+        "responses": {
+          "200": {
+            "description": "Sucesso"
+          },
+          "400": {
+            "description": "Payload inválido"
+          },
+          "401": {
+            "description": "Autenticação inválida"
+          },
+          "403": {
+            "description": "Sem permissão"
+          },
+          "409": {
+            "description": "Conflito de idempotência"
+          },
+          "422": {
+            "description": "Regra de negócio inválida"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/executions/{id}/finish": {
+      "post": {
+        "summary": "Finalizar reparo",
+        "responses": {
+          "200": {
+            "description": "Sucesso"
+          },
+          "400": {
+            "description": "Payload inválido"
+          },
+          "401": {
+            "description": "Autenticação inválida"
+          },
+          "403": {
+            "description": "Sem permissão"
+          },
+          "409": {
+            "description": "Conflito de idempotência"
+          },
+          "422": {
+            "description": "Regra de negócio inválida"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/health": {
+      "get": {
+        "security": [],
+        "summary": "/health",
+        "responses": {
+          "200": {
+            "description": "Operacional"
+          }
+        }
+      }
+    },
+    "/ready": {
+      "get": {
+        "security": [],
+        "summary": "/ready",
+        "responses": {
+          "200": {
+            "description": "Operacional"
+          }
+        }
+      }
+    },
+    "/metrics": {
+      "get": {
+        "security": [],
+        "summary": "/metrics",
+        "responses": {
+          "200": {
+            "description": "Operacional"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "schemas": {
+      "Diagnosis": {
+        "type": "object",
+        "required": [
+          "diagnosis",
+          "lines"
+        ],
+        "properties": {
+          "diagnosis": {
+            "type": "string"
+          },
+          "lines": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "required": [
+                "quantity",
+                "unitPriceCents",
+                "description"
+              ],
+              "properties": {
+                "quantity": {
+                  "type": "integer",
+                  "minimum": 1
+                },
+                "unitPriceCents": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "description": {
+                  "type": "string"
+                },
+                "sku": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,17 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: oficina-execution
+resources: [namespace.yaml, app.yaml, database.yaml, network-policy.yaml]
+configMapGenerator:
+  - name: service-config
+    literals:
+      - NODE_ENV=production
+      - APP_ENV=production
+      - PORT=3000
+      - DD_ENV=fase4
+      - DD_SERVICE=oficina-execution-service
+      - DD_TRACE_ENABLED=true
+      - DD_LOGS_INJECTION=true
+      - MP_LIVE_MODE=false
+generatorOptions:
+  disableNameSuffixHash: true

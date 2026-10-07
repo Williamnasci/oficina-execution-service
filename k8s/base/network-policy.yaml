@@ -1,0 +1,12 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: database-isolation
+spec:
+  podSelector:
+    matchLabels: { app: oficina-execution-service-database }
+  policyTypes: [Ingress]
+  ingress:
+    - from:
+        - podSelector: { matchLabels: { app: oficina-execution-service } }
+      ports: [{ protocol: TCP, port: 27017 }]
