@@ -225,7 +225,6 @@
               "type": "object",
               "required": [
                 "quantity",
-                "unitPriceCents",
                 "description"
               ],
               "properties": {
@@ -242,8 +241,23 @@
                 },
                 "sku": {
                   "type": "string"
+                },
+                "serviceId": {
+                  "type": "string"
                 }
-              }
+              },
+              "anyOf": [
+                {
+                  "required": [
+                    "unitPriceCents"
+                  ]
+                },
+                {
+                  "required": [
+                    "serviceId"
+                  ]
+                }
+              ]
             }
           }
         }

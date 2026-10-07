@@ -5,6 +5,5 @@ coverage/
 .env.*
 !.env.example
 bdd/results.json
-
 desktop.ini
 .DS_Store

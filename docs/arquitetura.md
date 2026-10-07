@@ -1,5 +1,7 @@
 # Arquitetura proposta e migração
 
+> Atualização de implementação: A topologia foi implementada e implantada localmente com três serviços/bancos próprios e RabbitMQ. O estado inicial descrito ao longo deste registro deve ser distinguido dos adapters agora implementados: inbox/outbox, publisher confirms, retries/DLQ, deadlines e tombstones já existem. O catálogo Billing agora resolve preços canônicos; estoque/reservas e migração do legado ainda estão pendentes. A visão geral de serviços permanece válida.
+
 ## Divisão por capacidade de negócio
 
 OS mantém identidade do cliente/veículo e a visão pública do ciclo de vida. Billing é dono da versão aprovada do orçamento e do ledger de pagamentos. Execution é dono da operação física e da disponibilidade de peças. Relacionamentos entre serviços usam IDs e snapshots versionados, sem foreign keys ou joins entre bancos.

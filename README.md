@@ -50,10 +50,10 @@ Relatórios LCOV são gerados em `coverage/lcov.info` e publicados como artifact
 
 ## CI/CD e infraestrutura própria
 
-[Pipeline](.github/workflows/ci-cd.yml): build, análise estática, coverage, integração, imagem GHCR por SHA e deploy Kubernetes com rollout/readiness. [Dockerfile](Dockerfile) executa como usuário sem privilégios. [Manifestos](k8s/base) incluem namespace próprio, aplicação, banco com PVC e NetworkPolicy.
+[Pipeline](.github/workflows/ci-cd.yml): build, análise estática, coverage, integração, imagem GHCR por SHA e deploy automático em Kubernetes temporário com Kind v0.33.0, rollout/readiness/OpenAPI, sem credencial de nuvem. [Dockerfile](Dockerfile) executa como usuário sem privilégios. [Manifestos](k8s/base) incluem namespace próprio, aplicação, banco com PVC e NetworkPolicy. Há também job de deploy remoto configurável.
 
 Deploy remoto requer `KUBE_CONFIG` no environment `fase4`, Secrets `service-secrets` no namespace e `DEPLOY_ENABLED=true`. Sem essas configurações o job é explicitamente desabilitado, não uma evidência de deploy remoto. Preparar acesso ao pacote GHCR se ele estiver privado. NetworkPolicy só é efetiva em CNI que a implemente; o Kindnet local não é evidência de enforcement.
 
 ## Limites desta implementação
 
-Dados da Fase 3 ainda não foram migrados. Estoque/reservas, catálogo completo, revisão de orçamento e CRUD legado ainda precisam ser extraídos. Não substituir a API antiga sem backfill e testes de regressão. O orçamento atual é manual, com valores de diagnóstico informados por operador autorizado e congelados no Billing.
+Dados da Fase 3 ainda não foram migrados. Estoque/reservas, revisão de orçamento e CRUD legado ainda precisam ser extraídos. Não substituir a API antiga sem backfill e testes de regressão. O orçamento admite serviços do catálogo próprio de Billing (preço canônico substitui valores do solicitante) e linhas manuais de diagnóstico informadas por operador autorizado. Os valores são congelados no orçamento.

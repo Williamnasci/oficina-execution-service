@@ -86,3 +86,54 @@ jobs:
             sleep 1
           done
           exit 1
+  kubernetes-validation:
+    name: Kubernetes deploy validation
+    needs: quality
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: azure/setup-kubectl@v4
+      - name: Create ephemeral Kubernetes environment
+        run: |
+          curl --fail --location https://kind.sigs.k8s.io/dl/v0.33.0/kind-linux-amd64 --output /tmp/kind
+          chmod +x /tmp/kind
+          /tmp/kind create cluster --name fase4 --wait 120s
+      - name: Build and load tested image
+        run: |
+          docker build -t oficina-execution-service:${{ github.sha }} .
+          /tmp/kind load docker-image oficina-execution-service:${{ github.sha }} --name fase4
+      - name: Provision independent namespace and secrets
+        run: |
+          kubectl apply -f k8s/base/namespace.yaml
+          kubectl -n oficina-execution create secret generic service-secrets \
+            --from-literal=DATABASE_URL='mongodb://execution:integration-password@database:27017/execution?authSource=admin' \
+            --from-literal=DATABASE_PASSWORD=integration-password \
+            --from-literal=AMQP_URL=amqp://integration:integration-password@rabbitmq:5672 \
+            --from-literal=JWT_SECRET=ci-integration-secret-thirty-two-characters
+          kubectl -n oficina-execution apply -f k8s/test/broker.yaml
+          kubectl -n oficina-execution rollout status deployment/test-rabbitmq --timeout=180s
+      - name: Deploy independent service and database
+        run: |
+          kubectl apply -k k8s/base
+          kubectl -n oficina-execution set image deployment/oficina-execution-service api=oficina-execution-service:${{ github.sha }}
+          kubectl -n oficina-execution set env deployment/oficina-execution-service DD_TRACE_ENABLED=false
+          kubectl -n oficina-execution rollout status statefulset/oficina-execution-service-database --timeout=180s
+          kubectl -n oficina-execution rollout status deployment/oficina-execution-service --timeout=180s
+      - name: Smoke-test deployed readiness and OpenAPI
+        run: |
+          kubectl -n oficina-execution port-forward service/oficina-execution-service 3000:3000 > /tmp/port-forward.log 2>&1 &
+          for attempt in $(seq 1 30); do
+            if curl --fail http://127.0.0.1:3000/ready; then break; fi
+            sleep 1
+          done
+          curl --fail http://127.0.0.1:3000/ready
+          curl --fail http://127.0.0.1:3000/openapi.json
+      - name: Diagnose failed deployment
+        if: failure()
+        run: |
+          kubectl get pods -A
+          kubectl -n oficina-execution get events --sort-by=.lastTimestamp
+          kubectl -n oficina-execution logs deployment/oficina-execution-service --all-containers=true --tail=100 || true
+      - name: Remove temporary cluster
+        if: always()
+        run: /tmp/kind delete cluster --name fase4
