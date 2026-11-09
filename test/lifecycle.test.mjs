@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { startWorkers } from '../src/infrastructure/lifecycle.mjs';
+import { startWorkers } from '../dist/infrastructure/lifecycle.mjs';
 test('workers relay durable messages, serialize deadlines and log failures', async () => {
   const logs = []; let relays = 0; let expirations = 0;
   const stop = startWorkers({ flush: async () => { relays++; throw new Error('relay failure'); } }, { expire: async () => { expirations++; throw new Error('deadline failure'); } }, { intervalMs: 10, log: value => logs.push(value) });

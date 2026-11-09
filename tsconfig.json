@@ -13,7 +13,12 @@
     "allowJs": true,
     "checkJs": false,
     "rewriteRelativeImportExtensions": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "strictPropertyInitialization": false,
+    "sourceMap": true,
+    "inlineSources": true
   },
   "include": [
     "src/**/*.ts",

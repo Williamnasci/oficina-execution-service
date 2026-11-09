@@ -1,4 +1,4 @@
-import { ConflictError } from '../src/infrastructure/contracts.mjs';
+import { ConflictError } from '../dist/infrastructure/contracts.mjs';
 export class MemoryStore {
   constructor() { this.records = new Map(); this.inbox = new Map(); this.outbox = []; }
   async transact(id, key, hash, decide) {

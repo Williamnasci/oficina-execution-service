@@ -2,8 +2,8 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import jwt from 'jsonwebtoken';
 import { z } from 'zod';
-import { createHttp, authorize, assertOwner } from '../src/infrastructure/http.mjs';
-import { ConflictError, NotFoundError } from '../src/infrastructure/contracts.mjs';
+import { createHttp, authorize, assertOwner } from '../dist/infrastructure/http.mjs';
+import { ConflictError, NotFoundError } from '../dist/infrastructure/contracts.mjs';
 
 const secret = 'test-secret-at-least-thirty-two-characters';
 const token = jwt.sign({ sub: 'customer', document: '52998224725', role: 'customer' }, secret);

@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { Broker } from '../src/infrastructure/broker.mjs';
-import { message } from '../src/infrastructure/contracts.mjs';
+import { Broker } from '../dist/infrastructure/broker.mjs';
+import { message } from '../dist/infrastructure/contracts.mjs';
 import { MemoryStore } from './helpers.mjs';
 import { EventEmitter } from 'node:events';
 

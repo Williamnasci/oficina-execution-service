@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { MongoStore } from '../src/infrastructure/mongo-store.mjs';
+import { MongoStore } from '../dist/infrastructure/mongo-store.mjs';
 
 function fixture() {
   let document = null; let conflict = 0; let insertError; const calls = [];

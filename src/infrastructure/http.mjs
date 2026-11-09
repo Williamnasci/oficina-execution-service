@@ -62,7 +62,7 @@ export async function createHttp({ service, store, broker, routes, spec, secret,
         const result = await route.handle(req, principal);
         res.status(route.status ?? 200).json(result ?? {});
       } catch (error) {
-        const status = error.status ?? (error instanceof z.ZodError ? 400 : error instanceof ConflictError ? 409 : error instanceof NotFoundError ? 404 : 422);
+        const status = error.status ?? error.getStatus?.() ?? (error instanceof z.ZodError ? 400 : error instanceof ConflictError ? 409 : error instanceof NotFoundError ? 404 : 422);
         res.status(status).json({ statusCode: status, message: error instanceof z.ZodError ? 'Invalid request' : error.message });
       }
     });

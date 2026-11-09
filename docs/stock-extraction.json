@@ -1,0 +1,87 @@
+[
+  {
+    "source": "src/modules/stock-items/application/dto/create-stock-item.dto.ts",
+    "source_sha256": "9f153bc93c7ecd696ac520e4c20a5e9c9b68f10a0be568905738349816880321",
+    "changes": "ESM .js suffixes and explicit jest globals only; Max bounds matching original PostgreSQL Int/Decimal(10,2)"
+  },
+  {
+    "source": "src/modules/stock-items/application/dto/stock-item-response.dto.ts",
+    "source_sha256": "98ba67bf37df156dfe9b9bcbcbb7f72cb5993596afc1e18e695721ad73432777",
+    "changes": "ESM .js suffixes and explicit jest globals only"
+  },
+  {
+    "source": "src/modules/stock-items/application/dto/update-stock-item.dto.ts",
+    "source_sha256": "9f2f1295270551b6a130ca3a15acd0c7002d575ca82de07ddf4479b8a64a6533",
+    "changes": "ESM .js suffixes and explicit jest globals only; Max bounds matching original PostgreSQL Int/Decimal(10,2)"
+  },
+  {
+    "source": "src/modules/stock-items/application/use-cases/create-stock-item.use-case.ts",
+    "source_sha256": "665246d40058a31bbc690cbd44a65f49bb17e2f9195b8f9ef85569ec4637e778",
+    "changes": "ESM .js suffixes and explicit jest globals only"
+  },
+  {
+    "source": "src/modules/stock-items/application/use-cases/delete-stock-item.use-case.ts",
+    "source_sha256": "2529df3485c114b0ff63dee55f3734088058bccf7e23e4646d08baf832920cd1",
+    "changes": "ESM .js suffixes and explicit jest globals only"
+  },
+  {
+    "source": "src/modules/stock-items/application/use-cases/get-stock-item.use-case.ts",
+    "source_sha256": "dd7de5343df36f16573a09026b8cb311e9ee25f8c52d4293ac3954b7cbf6117e",
+    "changes": "ESM .js suffixes and explicit jest globals only"
+  },
+  {
+    "source": "src/modules/stock-items/application/use-cases/list-stock-items.use-case.ts",
+    "source_sha256": "5ac7b9bc8cfe0b11e025b05bb6d9e00492adc5c9b6aada8cf7e2d46d3413ea87",
+    "changes": "ESM .js suffixes and explicit jest globals only"
+  },
+  {
+    "source": "src/modules/stock-items/application/use-cases/update-stock-item.use-case.ts",
+    "source_sha256": "c5fcbac28fcb8019e1f3aaa4e016c23f1d909df32b3674c88bfc4f02a423b393",
+    "changes": "ESM .js suffixes and explicit jest globals only"
+  },
+  {
+    "source": "src/modules/stock-items/domain/entities/stock-item.entity.ts",
+    "source_sha256": "cb2e747ee4ab46fa48b5805869e01b3ca6c6a057499e8d5d8389a4f1fd0ecade",
+    "changes": "ESM .js suffixes and explicit jest globals only"
+  },
+  {
+    "source": "src/modules/stock-items/domain/repositories/stock-item.repository.ts",
+    "source_sha256": "77485cfe46ed287afec6353fb41eb2a66260f1ffd2be28147684fb1b5007a0c9",
+    "changes": "ESM .js suffixes and explicit jest globals only"
+  },
+  {
+    "source": "src/shared/domain/errors/domain.exception.ts",
+    "source_sha256": "4e8556f6e6dba9f013383f4be73962849c95e4f201213073212e7aba4ad14954",
+    "changes": "ESM .js suffixes and explicit jest globals only"
+  },
+  {
+    "source": "test/unit/modules/stock-items/application/use-cases/create-stock-item.use-case.spec.ts",
+    "source_sha256": "10140fd87a0264eed2b7d4574e9033d4801d7a1b394bf118942e39236d9c1ddb",
+    "changes": "ESM .js suffixes and explicit jest globals only"
+  },
+  {
+    "source": "test/unit/modules/stock-items/application/use-cases/delete-stock-item.use-case.spec.ts",
+    "source_sha256": "1d1fcf407304097063fcf8c00bcdaf5a5891c1d596e32588ae73fd5fa156d668",
+    "changes": "ESM .js suffixes and explicit jest globals only"
+  },
+  {
+    "source": "test/unit/modules/stock-items/application/use-cases/get-stock-item.use-case.spec.ts",
+    "source_sha256": "1da312575946a0f76919eaaffae9325fba8ab8e053354a0ca2ac4fa4aad0860c",
+    "changes": "ESM .js suffixes and explicit jest globals only"
+  },
+  {
+    "source": "test/unit/modules/stock-items/application/use-cases/list-stock-items.use-case.spec.ts",
+    "source_sha256": "3c8ee83069949bb82df5cc62ed3028107c24cea576ea179de75cfbb3de94c1be",
+    "changes": "ESM .js suffixes and explicit jest globals only"
+  },
+  {
+    "source": "test/unit/modules/stock-items/application/use-cases/update-stock-item.use-case.spec.ts",
+    "source_sha256": "abd9a8e32d7bfc5c65a359c8b766e7fc17b18cbed2148b58c28f73a50bf00efd",
+    "changes": "ESM .js suffixes and explicit jest globals only"
+  },
+  {
+    "source": "test/unit/modules/stock-items/domain/entities/stock-item.entity.spec.ts",
+    "source_sha256": "09646bcb2c31e1db6ac71a54cfff66afe0759928797db32ed7b9e3011a11ccb8",
+    "changes": "ESM .js suffixes and explicit jest globals only"
+  }
+]

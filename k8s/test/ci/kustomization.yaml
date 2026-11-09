@@ -1,0 +1,8 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - ../../base
+images:
+  # MongoDB 8 exits at startup on the runner kernel (SERVER-121912).
+  - name: mongo
+    newTag: '7.0'

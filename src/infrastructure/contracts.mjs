@@ -37,6 +37,6 @@ export class NotFoundError extends Error {}
 export const lineSchema = z.object({
   quantity: z.number().int().positive(), unitPriceCents: z.number().int().nonnegative().optional(),
   description: z.string().min(1).max(200), sku: z.string().min(1).max(80).optional(),
-  serviceId: z.string().min(1).max(100).optional(),
+  serviceId: z.string().min(1).max(100).optional(), stockItemId: z.uuid().optional(),
 }).strict().refine(line => line.unitPriceCents !== undefined || line.serviceId !== undefined, 'Price or catalog service is required');
 export const diagnosisSchema = z.object({ diagnosis: z.string().trim().min(1).max(4000), lines: z.array(lineSchema).min(1).max(100) }).strict();
