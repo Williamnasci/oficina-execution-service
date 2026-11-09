@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { startDiagnosis, diagnose, queue, startRepair, finishRepair, cancel, cancellationTombstone } from '../src/work-order.ts';
+import { startDiagnosis, diagnose, queue, startRepair, finishRepair, cancel, cancellationTombstone } from '../dist/work-order.js';
 const diagnosed = () => diagnose(startDiagnosis('os-1'), ' Trocar filtro ');
 test('diagnosis and payment fence repair execution', () => {
   assert.throws(() => startDiagnosis(' '));

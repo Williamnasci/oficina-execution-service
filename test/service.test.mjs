@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { ExecutionService, executionRoutes } from '../src/service.mjs';
-import { message } from '../src/infrastructure/contracts.mjs';
+import { ExecutionService, executionRoutes } from '../dist/service.mjs';
+import { message } from '../dist/infrastructure/contracts.mjs';
 import { MemoryStore } from './helpers.mjs';
 
 const principal = { sub: 'op', role: 'operator' };

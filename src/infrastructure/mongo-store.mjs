@@ -4,12 +4,14 @@ import { ConflictError, RetryableError } from './contracts.mjs';
 /** A single-document CAS atomically commits state, inbox and outbox; no replica-set dependency. */
 export class MongoStore {
   constructor(url, client = new MongoClient(url, { serverSelectionTimeoutMS: 5000 })) { this.client = client; }
-  async init() {
+  async init({ indexes = true } = {}) {
     await this.client.connect();
     this.db = this.client.db();
     this.collection = this.db.collection('aggregates');
-    await this.collection.createIndex({ 'outbox.sent': 1 });
-    await this.collection.createIndex({ 'data.status': 1 });
+    if (indexes) {
+      await this.collection.createIndex({ 'outbox.sent': 1 });
+      await this.collection.createIndex({ 'data.status': 1 });
+    }
   }
   async transact(id, messageId, hash, decide) {
     for (let attempt = 0; attempt < 20; attempt++) {

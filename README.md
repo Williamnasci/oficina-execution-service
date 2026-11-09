@@ -57,3 +57,5 @@ Deploy remoto requer `KUBE_CONFIG` no environment `fase4`, Secrets `service-secr
 ## Limites desta implementação
 
 Dados da Fase 3 ainda não foram migrados. Estoque/reservas, revisão de orçamento e CRUD legado ainda precisam ser extraídos. Não substituir a API antiga sem backfill e testes de regressão. O orçamento admite serviços do catálogo próprio de Billing (preço canônico substitui valores do solicitante) e linhas manuais de diagnóstico informadas por operador autorizado. Os valores são congelados no orçamento.
+
+[Atualizações da Fase 4: estoque, orçamento e compatibilidade](docs/phase4-nov09.md).

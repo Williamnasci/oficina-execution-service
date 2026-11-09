@@ -15,4 +15,5 @@ export default [
     'sonarjs/no-inverted-boolean-check': 'error', 'sonarjs/no-collapsible-if': 'error',
     'no-eval': 'error', 'no-implied-eval': 'error', 'no-unused-vars': ['error', { argsIgnorePattern: '^_', caughtErrors: 'none' }],
   } },
+  { files: ['src/**/*.ts'], rules: { 'no-unused-vars': 'off', '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_', caughtErrors: 'none' }] } },
 ];
