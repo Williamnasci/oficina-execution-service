@@ -84,3 +84,21 @@ test('real MongoDB: crash between inventory and execution commits resumes withou
     assert.equal(record.outbox.filter(item => item.envelope.type === 'ExecutionStarted').length, 1);
   } finally { await store.close(); }
 });
+
+test('real MongoDB: ten concurrent reservations fail only when the stock is exhausted', { skip: !enabled }, async () => {
+  const store = await connect();
+  const stock = new StockRepository(store, { aggregateId: 'stock:test-' + randomUUID() });
+  const id = randomUUID();
+  try {
+    await stock.create(new StockItem({ id, name: 'Contended part', quantity: 5, unitPrice: 1 }));
+    const attempts = await Promise.allSettled(Array.from({ length: 10 }, (_, index) =>
+      stock.reserve('order-' + index, [{ stockItemId: id, quantity: 1 }])));
+    assert.equal(attempts.filter(result => result.status === 'fulfilled').length, 5);
+    for (const result of attempts.filter(result => result.status === 'rejected')) {
+      assert.match(result.reason.message, /insufficient|available/i);
+    }
+    assert.deepEqual(await stock.availability(id), { id, quantity: 5, reserved: 5, available: 0, isActive: true });
+  } finally {
+    await store.close();
+  }
+});
