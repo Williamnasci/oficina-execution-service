@@ -16,11 +16,17 @@ jobs:
     runs-on: ubuntu-latest
     services:
       database:
-        image: mongo:8
+        # MongoDB 8 exits at startup on the runner kernel (SERVER-121912).
+        image: mongo:7.0
         env:
           MONGO_INITDB_ROOT_USERNAME: execution
           MONGO_INITDB_ROOT_PASSWORD: integration-password
         ports: ['27017:27017']
+        options: >-
+          --health-cmd "mongosh --quiet --eval 'quit(db.adminCommand({ping: 1}).ok ? 0 : 1)'"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 20
     env:
       TEST_DATABASE_URL: mongodb://execution:integration-password@localhost:27017/integration?authSource=admin
     steps:
@@ -119,7 +125,7 @@ jobs:
           kubectl -n oficina-execution rollout status deployment/test-rabbitmq --timeout=180s
       - name: Deploy independent service and database
         run: |
-          kubectl apply -k k8s/base
+          kubectl apply -k k8s/test/ci
           kubectl -n oficina-execution set image deployment/oficina-execution-service api=oficina-execution-service:${{ github.sha }}
           kubectl -n oficina-execution set env deployment/oficina-execution-service DD_TRACE_ENABLED=false
           kubectl -n oficina-execution rollout status statefulset/oficina-execution-service-database --timeout=180s
