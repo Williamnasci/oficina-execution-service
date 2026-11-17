@@ -2,7 +2,7 @@
 
 [![CI/CD](https://github.com/Williamnasci/oficina-execution-service/actions/workflows/ci-cd.yml/badge.svg)](https://github.com/Williamnasci/oficina-execution-service/actions/workflows/ci-cd.yml)
 
-Microsserviço da Fase 4 do Tech Challenge FIAP. Diagnóstico, fila paga, início/finalização do reparo e cancelamento com tombstone. Banco exclusivo: **MongoDB**.
+Microsserviço da Fase 4 do Tech Challenge FIAP. Diagnóstico, CRUD de estoque, reservas de peças, fila após pagamento, início e conclusão do reparo e cancelamento com tombstone. Banco exclusivo: **MongoDB**.
 
 ## Serviços e fronteiras
 
@@ -42,7 +42,7 @@ Autenticação HS256 compatível com o segredo do emissor da Fase 3. Cliente só
 
 ## Qualidade e evidências
 
-15 testes de domínio, serviço e adapters; cobertura de linhas/branches/funções/statements com gate >=80%. Análise estática bloqueante via ESLint + regras SonarJS, além de TypeScript strict. Adapters HTTP/banco/broker estão incluídos na cobertura; apenas o ponto de composição `src/main.mjs` é excluído e exercitado pelos containers/BDD.
+20 testes nativos, 16 testes originais de estoque e 5 testes de integração com MongoDB; cobertura de linhas/branches/funções/statements com gate >=80%. Análise estática bloqueante via ESLint + regras SonarJS, além de TypeScript strict. Adapters HTTP/banco/broker estão incluídos na cobertura; apenas o ponto de composição `src/main.mjs` é excluído e exercitado pelos containers/BDD.
 
 Relatórios LCOV são gerados em `coverage/lcov.info` e publicados como artifacts no [CI](https://github.com/Williamnasci/oficina-execution-service/actions). Não declarar execução de SonarQube Cloud: a alternativa adotada é SonarJS/ESLint. `sonar-project.properties` prepara integração futura com SonarQube.
 
@@ -56,6 +56,6 @@ Deploy remoto requer `KUBE_CONFIG` no environment `fase4`, Secrets `service-secr
 
 ## Limites desta implementação
 
-Dados da Fase 3 ainda não foram migrados. Estoque/reservas, revisão de orçamento e CRUD legado ainda precisam ser extraídos. Não substituir a API antiga sem backfill e testes de regressão. O orçamento admite serviços do catálogo próprio de Billing (preço canônico substitui valores do solicitante) e linhas manuais de diagnóstico informadas por operador autorizado. Os valores são congelados no orçamento.
+O diagnóstico reserva peças e congela seus preços. O início do reparo consome as unidades reservadas, e o cancelamento anterior ao início libera a reserva. O teste com dez reservas simultâneas para cinco unidades confirmou cinco reservas e cinco recusas por saldo insuficiente. O catálogo e as reservas ainda compartilham o agregado stock:warehouse. O crescimento desse documento e a contenção no MongoDB são limites para produção. [Estoque, recuperação e migração](docs/phase4-nov09.md)
 
 [Atualizações da Fase 4: estoque, orçamento e compatibilidade](docs/phase4-nov09.md).
